@@ -1,0 +1,16 @@
+{
+  "name": "ecommerce_website",
+  "version": "1.0.0",
+  "description": "Group chat with mongodb",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
