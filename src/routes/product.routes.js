@@ -1,12 +1,14 @@
 import express from "express";
 import {
+  buyer_token_validation,
   product_validation,
   seller_token_validation,
 } from "../middlewares/validation.middleware.js";
 import {
   create_product_controller,
   delete_product_controller,
-  getAll_product_controller,
+  getAllBuyers_product_controller,
+  getAllSellers_product_controller,
   specific_product_controller,
   update_product_controller,
 } from "../controllers/product.controller.js";
@@ -19,7 +21,11 @@ router.post(
   seller_token_validation,
   create_product_controller
 ); // Add a new product (seller only)
-router.get("/seller", seller_token_validation, getAll_product_controller); // Get all products for a specific seller
+router.get(
+  "/seller",
+  seller_token_validation,
+  getAllSellers_product_controller
+); // Get all products for a specific seller
 router.get(
   "/seller/:productId",
   seller_token_validation,
@@ -38,7 +44,6 @@ router.delete(
 ); // Delete a specific product (seller only)
 
 // Routes for Buyers
-router.get("/"); // Get all products
-router.get("/:productId"); // Get a specific product
+router.get("/", buyer_token_validation, getAllBuyers_product_controller); // Get all products
 
 export default router;

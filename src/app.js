@@ -7,7 +7,8 @@ import { Cart } from "./models/cart.model.js";
 import { Order } from "./models/orders.model.js";
 import UserRouter from "./routes/user.routes.js";
 import ProductRouter from "./routes/product.routes.js";
-
+import CartRouter from "./routes/cart.routes.js";
+import OrderRouter from "./routes/order.routes.js";
 import ApiError from "./utils/ApiError.js";
 
 const app = express();
@@ -33,5 +34,7 @@ app.use((err, req, res, next) => {
 
 app.use("/api/v1/user", UserRouter);
 app.use("/api/v1/product", ProductRouter);
+app.use("/api/v1/cart", CartRouter);
+app.use("/api/v1/order", OrderRouter);
 
 export { app };

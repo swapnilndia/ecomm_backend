@@ -37,7 +37,7 @@ export const create_product_controller = async (req, res) => {
       .json(new ApiError("500", "Internal Server error", error));
   }
 };
-export const getAll_product_controller = async (req, res) => {
+export const getAllSellers_product_controller = async (req, res) => {
   const { userId } = req.user;
   try {
     const productList = await Product.find({
@@ -147,6 +147,25 @@ export const delete_product_controller = async (req, res) => {
       );
 
     // return res.status(500).json(new ApiError("500", "Internal Server error"));
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json(new ApiError("500", "Internal Server error", error));
+  }
+};
+
+export const getAllBuyers_product_controller = async (req, res) => {
+  try {
+    const productList = await Product.find();
+    if (!productList) {
+      return res.status(404).json(new ApiError(404, "No product found", {}));
+    }
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(200, productList, "Products successfully retrived")
+      );
   } catch (error) {
     console.log(error);
     return res
