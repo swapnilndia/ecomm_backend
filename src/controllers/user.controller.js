@@ -31,7 +31,8 @@ export const register_controller = async (req, res) => {
 };
 
 export const login_controller = async (req, res) => {
-  const { accessToken, refreshToken, userId } = req.body;
+  console.log(req.body);
+  const { accessToken, refreshToken, userId, isSeller } = req.body;
   try {
     const updatedUser = await User.updateOne(
       {
@@ -52,6 +53,7 @@ export const login_controller = async (req, res) => {
             accessToken,
             refreshToken,
             userId,
+            isSeller,
           },
           "User successfully Logged In"
         )

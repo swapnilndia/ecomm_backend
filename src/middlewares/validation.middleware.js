@@ -8,6 +8,7 @@ import {
 import jwt from "jsonwebtoken";
 
 export const register_validation = async (req, res, next) => {
+  console.log("he request received");
   try {
     await register_schema.validate(req.body, {
       abortEarly: false,
@@ -90,6 +91,7 @@ export const seller_token_validation = async (req, res, next) => {
         )
       );
     }
+    console.log(decodedToken);
     req.user = decodedToken;
     next();
   } catch (error) {

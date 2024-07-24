@@ -71,11 +71,10 @@ export const login_Middleware = async (req, res, next) => {
       userId: checkUserExists._id,
       isSeller: checkUserExists.isSeller,
     });
-    console.log(refreshToken);
-    console.log(accessToken);
     req.body.accessToken = accessToken;
     req.body.refreshToken = refreshToken;
     req.body.userId = checkUserExists._id;
+    req.body.isSeller = checkUserExists.isSeller;
     next();
   } catch (error) {
     return res.status(500).json(

@@ -1,5 +1,5 @@
+import mongoose from "mongoose";
 import { Cart } from "../models/cart.model.js";
-import { Product } from "../models/product.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
@@ -9,7 +9,9 @@ export const getCart_controller = async (req, res) => {
   console.log("User ID:", userId); // Debugging statement
 
   try {
-    const cart = await Cart.findOne({ userId: userId });
+    const cart = await Cart.findOne({ userId: userId }).populate(
+      "items.productId"
+    );
     if (!cart) {
       return res.status(404).json(new ApiError(404, "Cart not found"));
     }
@@ -64,6 +66,37 @@ export const add_button_controller = async (req, res) => {
   }
 };
 
+// Get total items in the cart.
+export const getCartItemQuantities_controller = async (req, res) => {
+  const { userId } = req.user;
+
+  try {
+    const result = await Cart.aggregate([
+      { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+      { $unwind: "$items" },
+      { $group: { _id: null, totalQuantity: { $sum: "$items.quantity" } } },
+    ]);
+
+    if (result.length === 0) {
+      return res.status(404).json(new ApiError(404, "Cart not found"));
+    }
+
+    const totalQuantity = result[0].totalQuantity;
+
+    res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          { totalQuantity },
+          "Total quantity of items in cart retrieved successfully"
+        )
+      );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(new ApiError(500, "Server error", error));
+  }
+};
 // Subtract item quantity in cart
 export const subtract_button_controller = async (req, res) => {
   const { userId } = req.user;

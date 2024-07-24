@@ -39,6 +39,7 @@ export const create_product_controller = async (req, res) => {
 };
 export const getAllSellers_product_controller = async (req, res) => {
   const { userId } = req.user;
+  console.log(userId, "This is product controller line 42");
   try {
     const productList = await Product.find({
       sellerId: userId,
@@ -47,7 +48,7 @@ export const getAllSellers_product_controller = async (req, res) => {
       return res.status(404).json(new ApiError(404, "No product found", {}));
     }
     return res
-      .status(201)
+      .status(200)
       .json(
         new ApiResponse(200, productList, "Products successfully retrived")
       );
@@ -69,7 +70,7 @@ export const specific_product_controller = async (req, res) => {
       return res.status(404).json(new ApiError(404, "No product found", {}));
     }
     return res
-      .status(201)
+      .status(200)
       .json(
         new ApiResponse(200, specificProduct, "Product successfully retrived")
       );
@@ -111,7 +112,7 @@ export const update_product_controller = async (req, res) => {
     }
     if (updateProduct.modifiedCount === 1) {
       return res
-        .status(201)
+        .status(200)
         .json(
           new ApiResponse(200, updateProduct, "Product successfully Updated")
         );
@@ -157,12 +158,14 @@ export const delete_product_controller = async (req, res) => {
 
 export const getAllBuyers_product_controller = async (req, res) => {
   try {
-    const productList = await Product.find();
+    const productList = await Product.find({
+      quantityAvailable: { $gt: 0 }, // Filter out products with quantity = 0
+    });
     if (!productList) {
       return res.status(404).json(new ApiError(404, "No product found", {}));
     }
     return res
-      .status(201)
+      .status(200)
       .json(
         new ApiResponse(200, productList, "Products successfully retrived")
       );

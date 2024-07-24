@@ -4,6 +4,7 @@ import {
   add_button_controller,
   clearCart_controller,
   getCart_controller,
+  getCartItemQuantities_controller,
   removeItemFromCart_controller,
   subtract_button_controller,
 } from "../controllers/cart.controller.js";
@@ -14,6 +15,11 @@ router.post("/add", buyer_token_validation, add_button_controller); // Add a pro
 router.put("/subtract", buyer_token_validation, subtract_button_controller); // Update cart item quantity
 
 router.get("/", buyer_token_validation, getCart_controller); // Get cart items
+router.get(
+  "/totalitem",
+  buyer_token_validation,
+  getCartItemQuantities_controller
+);
 router.delete(
   "/remove/:productId",
   buyer_token_validation,
